@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+    </head>
+    <body>
+        <h1>Moive Finder</h1>
+        <input id= "query" type="text" placeholder="Search..">
+        <button onclick="sendPostRequest()">Search</button>
+    </body>
+</html>
+
+<script>
+    function sendPostRequest() {
+
+      var xhr = new XMLHttpRequest();
+
+      var url = 'http://localhost:8080';  
+      xhr.open('POST', url, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+      var data = {
+        query: document.getElementById('query'),
+      };
+
+
+      var jsonData = JSON.stringify(data);
+
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          console.log('Success:', xhr.responseText);
+          var newElement = document.createElement('div');
+
+
+        newElement.id = 'myNewDiv';
+        newElement.textContent = xhr.responseText;
+        document.body.appendChild(newElement);
+        } else {
+          console.error('Error:', xhr.status, xhr.statusText);
+        }
+      };
+
+      // Set up a callback function to handle errors
+      xhr.onerror = function () {
+        console.error('Request failed');
+      };
+
+      // Send the request with the JSON data
+      xhr.send(jsonData);
+    }
+</script>
